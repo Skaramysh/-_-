@@ -14,14 +14,14 @@ def f_y(t, y): # 2 скорость
     return ((math.exp(t) - math.exp(-t))/2) * y  # sh(t) * y
 
 
-def create_material_body(x_c, y_c, h):  # Функция создания материального тела
+def create_material_body(x_c, y_c):  # Функция создания материального тела
     t = 0
     m = 0
     material_points = []  # Создание массива
-    for i in range(int(2/h) + 1):
-        for j in range(int(2/h) + 1):
-            x = x_c - j * h
-            y = y_c + i * h
+    for i in range(3):
+        for j in range(4):
+            x = x_c - j
+            y = y_c + i
             material_points.append(mod.MaterialPoint(m, x, y, f_x(t, x), f_y(t, y), x, y, t)) # Добавление точек в массив
             m += 1
     material_body = mod.MaterialBody(material_points)  # Формирование тела из точек
@@ -68,12 +68,12 @@ def move_material_body(time, h, mb):  # Функция для движения �
 def plot_trajectory(mb, tr): # Функция построения графика траектории
 
     for i in range(len(mb.material_points)):
-        plt.plot(mb.material_points[i].coord_x, mb.material_points[i].coord_y, 'r.')
+        plt.plot(mb.material_points[i].coord_x, mb.material_points[i].coord_y, 'r.') # Рисует красные точки
     for i in range(len(mb.material_points)):
-        plt.plot(tr.point_trajectories[i].x, tr.point_trajectories[i].y, 'b', linewidth=0.5)
+        plt.plot(tr.point_trajectories[i].x, tr.point_trajectories[i].y, 'b', linewidth=0.5) # draw line
     for i in range(len(mb.material_points)):
         time = len(tr.point_trajectories[i].x) - 1
-        plt.plot(tr.point_trajectories[i].x[time], tr.point_trajectories[i].y[time], 'g.')
+        plt.plot(tr.point_trajectories[i].x[time], tr.point_trajectories[i].y[time], 'g.') # рисует зеленые точки
     plt.axis('equal')
     plt.grid()
     # plt.show()
@@ -127,7 +127,7 @@ def plot_velocity_fields(vf):  # Функция построения графи�
                 y = c * ((-x) ** (-d))
                 plt.subplot(1, 2, 2)
                 plt.axis([-4, 4, -4, 4])
-                plt.plot(x, y)
+                plt.plot(x, -y)
         t += h
         # plt.show()
         plt.savefig('assets/velocity_fields' + str(n) + '.png', format='png', dpi=300)
